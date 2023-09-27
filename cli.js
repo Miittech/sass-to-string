@@ -1,6 +1,6 @@
-const fs = require("fs-extra");
-const path = require("path");
-const sass = require("sass");
+import { readdirSync, statSync, readFileSync, outputFile } from "fs-extra";
+import { resolve } from "path";
+import { renderSync } from "sass";
 
 let config = {};
 try {
@@ -47,26 +47,25 @@ const replaceLast = function (content, search, replacement) {
 };
 
 const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
-  fs.readdirSync(directoryToSearch).forEach((subDirectory) => {
-    const subDirectoryToSearch = path.resolve(directoryToSearch, subDirectory);
+  readdirSync(directoryToSearch).forEach((subDirectory) => {
+    const subDirectoryToSearch = resolve(directoryToSearch, subDirectory);
 
-    const stat = fs.statSync(subDirectoryToSearch);
+    const stat = statSync(subDirectoryToSearch);
     if (stat.isDirectory()) {
       transformSassFilesToEsModules(subDirectoryToSearch, pattern);
     }
 
     if (stat.isFile() && subDirectoryToSearch.endsWith(pattern)) {
       log(`Reading file ${subDirectory}`);
-      const fileContent = fs.readFileSync(subDirectoryToSearch).toString();
+      const fileContent = readFileSync(subDirectoryToSearch).toString();
       const data = config.prepare(fileContent);
-      const result = sass
-        .renderSync({
-          data,
-        })
+      const result = renderSync({
+        data,
+      })
         .css.toString();
 
       const distDirectory = config.dist;
-      const computedPath = path.resolve(
+      const computedPath = resolve(
         __dirname,
         distDirectory,
         `${replaceLast(
@@ -76,7 +75,7 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
         )}.js`
       );
       const content = `const styles = \`${result}\`; export default styles;`;
-      fs.outputFile(computedPath, content, (error) => {
+      outputFile(computedPath, content, (error) => {
         if (error) {
           console.error({ error });
         } else {
