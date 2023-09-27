@@ -1,6 +1,7 @@
-import { readdirSync, statSync, readFileSync, outputFile } from "fs-extra";
-import { resolve } from "path";
-import { renderSync } from "sass";
+const fs = require("fs-extra");
+const path = require("path");
+const sass = require("sass");
+
 
 let config = {};
 try {
