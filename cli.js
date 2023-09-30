@@ -7,7 +7,7 @@ let config = {};
 try {
   // Requesting the file to be at the root of the project
   // eslint-disable-next-line
-  config = require(`${process.cwd()}/.sass-to-string.js --verbose`);
+  config = require(`${process.cwd()}/.sass-to-string.js`);
 } catch (e) {
   console.error(
     "sass-to-string encountered an error loading the config file. Falling back on the default config",
