@@ -43,8 +43,10 @@ const log = (content) => {
 
 const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
-  const lastOccurence = parts.pop();
-  return `${parts.join(search)}${replacement}.styles.${lastOccurence}`;
+  let lastOccurence = parts.pop().split(".");
+  lastOccurence = lastOccurence.insert(1, "styles").join(".");
+
+  return `${parts.join(search)}${replacement}${lastOccurence}`;
 };
 
 const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
