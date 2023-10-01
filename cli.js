@@ -44,7 +44,7 @@ const log = (content) => {
 const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
   const lastOccurence = parts.pop();
-  return `${parts.join(search)}${replacement}${lastOccurence}`;
+  return `${parts.join(search)}${replacement}.styles.${lastOccurence}`;
 };
 
 const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
@@ -58,13 +58,13 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
 
     if (stat.isFile() && subDirectoryToSearch.endsWith(pattern)) {
       log(`Reading file ${subDirectory}`);
-      console.log(`Reading file ${subDirectory}`);
+      log(`Reading file ${subDirectory}`);
 
       const fileContent = fs.readFileSync(subDirectoryToSearch).toString();
       const data = config.prepare(fileContent);
       const result = sass.renderSync({ data, }).css.toString();
 
-      console.log(`fileContent: ${fileContent}`);
+      log(`fileContent: ${fileContent}`);
 
       const distDirectory = config.dist;
       const computedPath = path.resolve(
@@ -77,11 +77,11 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
         )}.js`
       );
 
-      console.log(`disDirectory: ${distDirectory}`);
-      console.log(`computedPath: ${computedPath}`);
+      log(`disDirectory: ${distDirectory}`);
+      log(`computedPath: ${computedPath}`);
 
       const content = `const styles = \`${result}\`; export default styles;`;
-      console.log(content);
+      log(content);
 
       fs.outputFile(computedPath, content, (error) => {
         if (error) {
