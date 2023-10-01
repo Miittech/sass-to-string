@@ -44,7 +44,7 @@ const log = (content) => {
 const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
   let lastOccurence = parts.pop();
-  lastOccurence = lastOccurence.splice(1, "styles").join(".");
+  lastOccurence = lastOccurence.split(".").splice(1, "styles").join(".");
 
   log(lastOccurence);
 
