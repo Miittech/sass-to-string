@@ -58,12 +58,16 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
 
     if (stat.isFile() && subDirectoryToSearch.endsWith(pattern)) {
       log(`Reading file ${subDirectory}`);
+      console.log(`Reading file ${subDirectory}`);
+
       const fileContent = readFileSync(subDirectoryToSearch).toString();
       const data = config.prepare(fileContent);
       const result = renderSync({
         data,
       })
         .css.toString();
+
+      console.log(`fileContent: ${fileContent}`);
 
       const distDirectory = config.dist;
       const computedPath = resolve(
@@ -75,12 +79,19 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
           `/${distDirectory}/`
         )}.js`
       );
+
+      console.log(`disDirectory: ${distDirectory}`);
+      console.log(`computedPath: ${computedPath}`);
+
       const content = `const styles = \`${result}\`; export default styles;`;
+      console.log(content);
+
       outputFile(computedPath, content, (error) => {
         if (error) {
           console.error({ error });
         } else {
-          log(`Successfully created ${subDirectory}.js in ${computedPath}`);
+          log
+            (`Successfully created ${subDirectory}.js in ${computedPath}`);
         }
       });
     }
