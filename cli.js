@@ -52,11 +52,11 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
     const subDirectoryToSearch = path.resolve(directoryToSearch, subDirectory);
 
     const stat = fs.statSync(subDirectoryToSearch);
-    if (fs.stat.isDirectory()) {
+    if (stat.isDirectory()) {
       transformSassFilesToEsModules(subDirectoryToSearch, pattern);
     }
 
-    if (fs.stat.isFile() && subDirectoryToSearch.endsWith(pattern)) {
+    if (stat.isFile() && subDirectoryToSearch.endsWith(pattern)) {
       log(`Reading file ${subDirectory}`);
       console.log(`Reading file ${subDirectory}`);
 
