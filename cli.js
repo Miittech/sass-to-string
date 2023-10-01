@@ -48,8 +48,8 @@ const replaceLast = function (content, search, replacement) {
 };
 
 const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
-  readdirSync(directoryToSearch).forEach((subDirectory) => {
-    const subDirectoryToSearch = resolve(directoryToSearch, subDirectory);
+  fs.readdirSync(directoryToSearch).forEach((subDirectory) => {
+    const subDirectoryToSearch = path.resolve(directoryToSearch, subDirectory);
 
     const stat = statSync(subDirectoryToSearch);
     if (stat.isDirectory()) {
@@ -60,17 +60,14 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
       log(`Reading file ${subDirectory}`);
       console.log(`Reading file ${subDirectory}`);
 
-      const fileContent = readFileSync(subDirectoryToSearch).toString();
+      const fileContent = fs.readFileSync(subDirectoryToSearch).toString();
       const data = config.prepare(fileContent);
-      const result = renderSync({
-        data,
-      })
-        .css.toString();
+      const result = fs.renderSync({ data, }).css.toString();
 
       console.log(`fileContent: ${fileContent}`);
 
       const distDirectory = config.dist;
-      const computedPath = resolve(
+      const computedPath = path.resolve(
         __dirname,
         distDirectory,
         `${replaceLast(
@@ -86,7 +83,7 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
       const content = `const styles = \`${result}\`; export default styles;`;
       console.log(content);
 
-      outputFile(computedPath, content, (error) => {
+      fs.outputFile(computedPath, content, (error) => {
         if (error) {
           console.error({ error });
         } else {
