@@ -62,7 +62,7 @@ const transformSassFilesToEsModules = (directoryToSearch, pattern) => {
 
       const fileContent = fs.readFileSync(subDirectoryToSearch).toString();
       const data = config.prepare(fileContent);
-      const result = renderSync({ data, }).css.toString();
+      const result = sass.renderSync({ data, }).css.toString();
 
       console.log(`fileContent: ${fileContent}`);
 
