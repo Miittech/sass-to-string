@@ -43,8 +43,8 @@ const log = (content) => {
 
 const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
-  const lastOccurence = parts.pop();
-  lastOccurence.split(".");
+  const part = parts.pop();
+  const lastOccurence = part.split(".");
   lastOccurence.splice(1, 0, "styles");
 
   log(lastOccurence);
