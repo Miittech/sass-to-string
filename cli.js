@@ -45,7 +45,7 @@ const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
   let lastOccurence = parts.pop();
 
-  log(lastOccurence.split("."));
+  log(lastOccurence.split("."), typeof lastOccurence);
   // lastOccurence = lastOccurence.insert(1, "styles").join(".");
 
   return `${parts.join(search)}${replacement}${lastOccurence}`;
