@@ -45,7 +45,7 @@ const replaceLast = function (content, search, replacement) {
   const parts = content.split(search);
   let lastOccurence = parts.pop();
 
-  const a = lastOccurence.dup.split(".");
+  const a = lastOccurence.split(".");
   log(lastOccurence, a, typeof lastOccurence === 'string');
 
   return `${parts.join(search)}${replacement}${lastOccurence}`;
